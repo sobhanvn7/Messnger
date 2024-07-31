@@ -1,14 +1,14 @@
 # api/urls.py
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import DefaultRouter, SimpleRouter
 from .views import UserViewSet, ChatViewSet, MessageViewSet, AuthView
 
-router = DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'chats', ChatViewSet)
-router.register(r'messages', MessageViewSet)
-
+app_name = 'api'
 urlpatterns = [
     path('auth/', AuthView.as_view(), name='auth'),
-    path('', include(router.urls)),
 ]
+
+router = SimpleRouter()
+router.register('user', UserViewSet),
+router.register('chat', ChatViewSet),
+urlpatterns += router.urls

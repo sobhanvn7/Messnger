@@ -30,13 +30,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.phone_number
+        return f" {self.phone_number}"
+
 
 class Chat(models.Model):
     participants = models.ManyToManyField(User)
 
+    def __str__(self):
+        return f" {self.participants.all()}"
+
+
 class Message(models.Model):
-    chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
-    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='chat')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
